@@ -1,0 +1,158 @@
+/* styles/components/_buttons.scss */
+.btn {
+  /* Vars por defecto (pueden sobreescribirse en modifiers) */
+  --btn-bg: var(--color-primary);
+  --btn-fg: #0b0f14;
+  --btn-br: color-mix(in oklab, var(--color-border) 70%, transparent);
+  --btn-shadow: var(--shadow-1);
+  --btn-radius: var(--radius-sm);
+  --btn-pad-y: .55rem;
+  --btn-pad-x: .9rem;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+
+  margin: 2px;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--btn-radius);
+  border: 1px solid var(--btn-br);
+  background: linear-gradient(transparent, color-mix(in oklab, #000 6%, transparent)) var(--btn-bg);
+  color: var(--btn-fg);
+  font-weight: 600;
+  line-height: 1;
+  box-shadow: var(--btn-shadow);
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    transform .06s ease,
+    filter .15s ease,
+    background .15s ease,
+    box-shadow .15s ease;
+
+  &:hover { filter: brightness(1.04); }
+  &:active { transform: translateY(1px) scale(.998); }
+
+  /* Accesibilidad: anillo de enfoque */
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--color-primary) 28%, transparent),
+      var(--btn-shadow);
+  }
+
+  /* Deshabilitado */
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: .6;
+    pointer-events: none;
+    filter: grayscale(.1);
+  }
+
+  /* Loading (data-loading="true") */
+  &[data-loading="true"] {
+    pointer-events: none;
+    color: transparent; /* ocultamos texto sin mover layout */
+  }
+  &[data-loading="true"]::after {
+    content: "";
+    position: absolute;
+    width: 1em; height: 1em;
+    border-radius: 50%;
+    border: 2px solid color-mix(in oklab, var(--btn-fg) 30%, transparent);
+    border-top-color: var(--btn-fg);
+    animation: spin .8s linear infinite;
+  }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Variantes */
+.btn--secondary {
+  --btn-bg: var(--color-surface);
+  --btn-fg: #0b0f14;
+  --btn-br: color-mix(in oklab, var(--color-border) 80%, transparent);
+}
+
+.btn--outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-text);
+  --btn-br: color-mix(in oklab, var(--color-text) 25%, transparent);
+  box-shadow: none;
+  &:hover { background: color-mix(in oklab, var(--color-text) 6%, transparent); }
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-muted);
+  --btn-br: transparent;
+  box-shadow: none;
+  &:hover { background: color-mix(in oklab, var(--color-text) 6%, transparent); }
+}
+
+/* Tonal/soft (relleno suave con el color del tema) */
+.btn--soft {
+  --btn-bg: color-mix(in oklab, var(--color-primary) 18%, transparent);
+  --btn-fg: var(--color-text);
+  --btn-br: color-mix(in oklab, var(--color-primary) 25%, var(--color-border));
+}
+
+.btn--danger {
+  --btn-bg: var(--color-danger);
+  --btn-fg: #0b0f14;
+}
+
+/* Tamaños */
+.btn--xs { --btn-pad-y: .30rem; --btn-pad-x: .55rem; font-size: .85rem; }
+.btn--sm { --btn-pad-y: .40rem; --btn-pad-x: .75rem; font-size: .92rem; }
+.btn--lg { --btn-pad-y: .72rem; --btn-pad-x: 1.1rem; --btn-radius: var(--radius-md); }
+
+/* Solo icono (cuadrado) */
+.btn--icon {
+  --btn-pad-x: .6rem;
+  width: 2.25rem; height: 2.25rem; padding: 0;
+}
+
+/* Bloque completo */
+.btn--block { width: 100%; }
+
+/* Grupo de botones */
+.btn-group {
+  display: inline-flex;
+  > .btn {
+    border-radius: 0;
+    &:first-child { border-top-left-radius: var(--radius-sm); border-bottom-left-radius: var(--radius-sm); }
+    &:last-child { border-top-right-radius: var(--radius-sm); border-bottom-right-radius: var(--radius-sm); }
+    &:not(:first-child) { margin-left: -1px; } /* une bordes */
+  }
+}
+
+/* Estado “elevado” opcional */
+.btn--elevated { box-shadow: var(--shadow-2); }
+
+/* Respeta usuarios con “reduced motion” */
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}
+/* Botón de icono */
+.btn--icon { padding: .4rem; width: 2rem; height: 2rem; line-height: 0; }
+.btn--round { border-radius: 999px; }
+
+/* Variante danger “ghost” (outline + hover suave) */
+.btn--danger-ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-danger);
+  --btn-br: rgba(239,83,80,.5); /* rojo con transparencia */
+}
+.btn--danger-ghost:hover {
+  --btn-bg: rgba(239,83,80,.12);
+}
+
+/* Icono dentro de botón */
+.btn svg { width: 1.05rem; height: 1.05rem; }
+
+/* Accesibilidad: focus visible */
+.btn:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px; }

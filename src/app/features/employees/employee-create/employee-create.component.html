@@ -1,0 +1,6 @@
+<section class="container">
+  <a routerLink="/employees" class="btn btn--ghost btn--sm">← Volver</a>
+  <h2 class="title">Nuevo empleado</h2>
+
+  <app-employee-form [initial]="initial" (save)="onSave($event)"></app-employee-form>
+</section>

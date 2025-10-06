@@ -1,0 +1,52 @@
+<form (ngSubmit)="submit()" [formGroup]="form" class="c-card" novalidate>
+  <div class="c-card__body">
+    <div class="f-grid">
+      <div class="f-field">
+        <label class="f-label" for="name">Nombre *</label>
+        <input id="name" class="f-input"
+               type="text"
+               formControlName="name"
+               placeholder="Ej: Landing corporativa"
+               [class.is-invalid]="f.name.touched && f.name.invalid" />
+        <small class="f-err" *ngIf="f.name.touched && f.name.invalid" aria-live="polite">
+          El nombre es obligatorio (mín. 3 caracteres).
+        </small>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label" for="status">Estado *</label>
+        <select id="status" class="f-select"
+                formControlName="status"
+                [class.is-invalid]="f.status.touched && f.status.invalid">
+          <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label" for="startDate">Inicio</label>
+        <input id="startDate" class="f-input" type="date"
+               formControlName="startDate"
+               [attr.max]="form.value.endDate || null" />
+      </div>
+
+      <div class="f-field">
+        <label class="f-label" for="endDate">Fin</label>
+        <input id="endDate" class="f-input" type="date"
+               formControlName="endDate"
+               [attr.min]="form.value.startDate || null" />
+      </div>
+
+      <div class="f-field f-field--span-2">
+        <label class="f-label" for="description">Descripción</label>
+        <textarea id="description" class="f-textarea" rows="4"
+                  formControlName="description"
+                  placeholder="Descripción breve del proyecto"></textarea>
+      </div>
+    </div>
+
+    <div class="l-flex l-flex--row" style="gap: var(--space-3); justify-content:flex-end; margin-top: var(--space-4);">
+      <button type="submit" class="btn btn--elevated"
+              [disabled]="form.invalid || !form.dirty">Guardar</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,30 @@
+<form (ngSubmit)="submit()" [formGroup]="form" class="c-card">
+  <div class="c-card__body">
+    <div class="f-grid">
+      <div class="f-field">
+        <label class="f-label">Nombre completo *</label>
+        <input class="f-input" type="text" formControlName="fullName" placeholder="Ej: Ana García" />
+        <small class="f-err" *ngIf="f.fullName.touched && f.fullName.invalid">
+          El nombre es obligatorio (mín. 3 caracteres).
+        </small>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label">Email</label>
+        <input class="f-input" type="email" formControlName="email" placeholder="ana@empresa.com" />
+        <small class="f-err" *ngIf="f.email.touched && f.email.invalid">
+          Email no válido.
+        </small>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label">Rol</label>
+        <input class="f-input" type="text" formControlName="role" placeholder="Ej: Desarrollador" />
+      </div>
+    </div>
+
+    <div class="l-flex l-flex--row" style="gap: var(--space-3); justify-content:flex-end; margin-top: var(--space-4);">
+      <button type="submit" class="btn">Guardar</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,9 @@
+.title { margin: var(--space-3) 0; }
+.muted { opacity: .8; }
+.box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-1);
+}

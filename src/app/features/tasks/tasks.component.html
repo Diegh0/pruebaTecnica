@@ -1,0 +1,72 @@
+<section class="container">
+  <h2 class="title">Tareas</h2>
+
+  <div class="l-flex l-flex--row" style="gap: var(--space-3); align-items:center; margin-bottom: var(--space-4);">
+    <input class="f-input" type="search" placeholder="Buscar por título…" (input)="q.set($any($event.target).value)" />
+    <select class="f-select" (change)="status.set(($any($event.target).value))">
+      <option value="all">Todos los estados</option>
+      <option value="pending">Pendiente</option>
+      <option value="in_progress">En progreso</option>
+      <option value="completed">Completada</option>
+    </select>
+    <select class="f-select" (change)="projectId.set(($any($event.target).value))">
+      <option value="all">Todos los proyectos</option>
+      <option *ngFor="let p of projects()" [value]="p.id">{{ p.name }}</option>
+    </select>
+    <button class="btn" (click)="create()">Nueva tarea</button>
+  </div>
+
+  <div class="c-card">
+    <div class="c-card__body">
+      <table class="t-table">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Estado</th>
+            <th>Creación</th>
+            <th>Límite</th>
+            <th>Empleado</th>
+            <th class="t-table__actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of filtered()">
+            <td>{{ t.title }}</td>
+            <td><span class="badge" [ngClass]="'badge--' + t.status">{{ t.status }}</span></td>
+            <td>{{ t.createdAt }}</td>
+            <td>{{ t.dueDate || '—' }}</td>
+            <td>{{ employeeName(t.employeeId) }}</td>
+            <td class="t-table__actions">
+              <button class="btn btn--outline" (click)="edit(t, $event)">Editar</button>
+              <button class="btn btn--danger-ghost btn--icon btn--round"
+        (click)="askDelete(t, $event)" aria-label="Eliminar tarea">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="3 6 5 6 21 6"></polyline>
+    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+    <path d="M10 11v6"></path>
+    <path d="M14 11v6"></path>
+    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+  </svg>
+</button>
+
+            </td>
+          </tr>
+          <tr *ngIf="filtered().length === 0">
+            <td colspan="6" style="opacity:.7; padding:1.2rem;">No hay tareas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<app-confirm-dialog
+  *ngIf="confirmOpen()"
+  [title]="'Eliminar tarea'"
+  [message]="'¿Seguro que quieres eliminar «' + (toDelete()?.title || '') + '»?'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'Cancelar'"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()"
+></app-confirm-dialog>

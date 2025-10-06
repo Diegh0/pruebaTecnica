@@ -1,0 +1,10 @@
+.t-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td { padding: .85rem; border-bottom: 1px solid var(--color-border); }
+  th { text-align: left; opacity: .85; font-weight: 600; }
+  tr:hover { background: var(--color-surface-2); }
+}
+
+.t-table__actions { white-space: nowrap; width: 1%; }

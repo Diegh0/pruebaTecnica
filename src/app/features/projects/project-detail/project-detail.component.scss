@@ -1,0 +1,67 @@
+.title { margin: var(--space-3) 0; }
+.sub { margin: var(--space-6) 0 var(--space-3); }
+
+.chips { display:flex; flex-wrap:wrap; gap: .4rem; margin-bottom: var(--space-3); }
+.chip {
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding: .25rem .6rem; border-radius: 999px; font-size: .85rem;
+  background: var(--color-surface-2); border: 1px solid var(--color-border);
+}
+
+.emp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-3);
+}
+
+.emp-item {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #0f1626;
+  overflow: hidden;            /* evita que nada se salga */
+}
+
+.emp-check { flex: 0 0 auto; }
+
+.emp-label {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  width: 100%;
+  min-width: 0;                /* clave para permitir encoger a los hijos */
+  cursor: pointer;
+}
+
+.emp-name {
+  font-weight: 600;
+  min-width: 0;                /* evita empujar al rol */
+}
+
+.emp-role {
+  margin-left: auto;
+  font-size: .9rem;
+  opacity: .75;
+  min-width: 0;                /* permite encoger */
+  white-space: nowrap;         /* una sola línea */
+  overflow: hidden;            /* oculta el exceso */
+  text-overflow: ellipsis;     /* … */
+  flex: 0 1 45%;               /* reserva ~45% si hay sitio y que pueda encoger */
+  text-align: right;
+}
+
+/* En pantallas pequeñas, mejor que el rol baje a segunda línea */
+@media (max-width: 640px) {
+  .emp-label { flex-wrap: wrap; }
+  .emp-role {
+    flex: 0 0 100%;
+    margin-left: 0;
+    text-align: left;
+    white-space: normal;
+    text-overflow: clip;
+  }
+}
+

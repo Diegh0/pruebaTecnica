@@ -1,0 +1,71 @@
+/* styles/components/_forms.scss */
+.f-input, .f-select, .f-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: .6rem .75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+
+  &::placeholder { color: var(--color-muted); }
+
+  &:focus {
+    border-color: var(--color-info);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-info) 25%, transparent);
+    background: var(--color-surface-2);
+  }
+
+  &:disabled { opacity:.7; cursor:not-allowed; }
+}
+
+.f-textarea { resize: vertical; }
+
+/* Estados de validación */
+.is-invalid,
+.ng-touched.ng-invalid {
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-danger) 20%, transparent) !important;
+}
+
+/* Grid 2 col flexible (arregla lo de las fechas) */
+.f-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+/* 1 col en móvil */
+@media (max-width: 768px) {
+  .f-grid { grid-template-columns: 1fr; }
+}
+
+/* Item de formulario */
+.f-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* clave para que no desborde dentro del grid */
+}
+
+.f-label { margin-bottom: .25rem; color: var(--color-text); font-weight: 600; }
+.f-err   { color: var(--color-danger); margin-top: .25rem; font-size: .9rem; }
+
+/* Span a ancho completo (p.ej. descripción) */
+.f-field--span-2 { grid-column: 1 / -1; }
+
+/* Date: deja aire para el icono y mejora contraste nativo en oscuro */
+.f-input[type="date"] {
+  padding-right: 2.2rem;
+  color-scheme: dark;
+}
+.f-input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: .85;
+  cursor: pointer;
+  margin-left: .5rem;
+}
+
+/* Select: pequeña mejora del “tap target” */
+.f-select { padding-right: 2.2rem; }

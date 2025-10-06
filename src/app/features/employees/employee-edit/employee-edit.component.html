@@ -1,0 +1,13 @@
+<section class="container" *ngIf="employee$ | async as employee; else notFoundTpl">
+  <a routerLink="/employees" class="btn btn--ghost btn--sm">← Volver</a>
+  <h2 class="title">Editar empleado</h2>
+
+  <app-employee-form [initial]="employee" (save)="onSave($event)"></app-employee-form>
+</section>
+
+<ng-template #notFoundTpl>
+  <section class="container">
+    <a routerLink="/employees" class="btn btn--ghost btn--sm">← Volver</a>
+    <div class="c-card"><div class="c-card__body">Empleado no encontrado.</div></div>
+  </section>
+</ng-template>

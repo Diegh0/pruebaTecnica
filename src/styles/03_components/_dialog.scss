@@ -1,0 +1,17 @@
+.c-dialog__overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 90;
+}
+.c-dialog {
+  position: fixed; inset: 0; display:grid; place-items:center; z-index: 100;
+}
+.c-dialog__panel {
+  width: min(520px, 92vw);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2);
+  padding: var(--space-4);
+}
+.c-dialog__title { margin: 0 0 var(--space-3) 0; }
+.c-dialog__message { opacity:.9; margin-bottom: var(--space-4); }
+.c-dialog__actions { display:flex; justify-content:flex-end; gap: var(--space-3); }

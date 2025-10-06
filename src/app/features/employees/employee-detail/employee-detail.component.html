@@ -1,0 +1,96 @@
+<section class="container" *ngIf="employee$ | async as emp; else notFoundTpl">
+  <a routerLink="/employees" class="btn btn--ghost btn--sm">← Volver</a>
+  <h2 class="title">{{ emp.fullName }}</h2>
+
+  <div class="c-card">
+    <div class="c-card__body">
+      <div class="f-grid">
+        <div class="f-field">
+          <span class="f-label">Email</span>
+          <span>{{ emp.email || '—' }}</span>
+        </div>
+        <div class="f-field">
+          <span class="f-label">Rol</span>
+          <span>{{ emp.role || '—' }}</span>
+        </div>
+      </div>
+
+      <div class="l-flex l-flex--row" style="gap: var(--space-3); margin-top: var(--space-4);">
+        <button class="btn btn--outline" (click)="edit(emp)">Editar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proyectos del empleado -->
+  <h3 style="margin-top: var(--space-6); margin-bottom: var(--space-3);">Proyectos</h3>
+  <div class="c-card">
+    <div class="c-card__body">
+      <table class="t-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Estado</th>
+            <th>Rango</th>
+            <th class="t-table__actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of projectsOfEmployee()">
+            <td>{{ p.name }}</td>
+            <td><span class="badge" [ngClass]="'badge--' + p.status">{{ p.status }}</span></td>
+            <td>{{ p.startDate || '—' }} — {{ p.endDate || '—' }}</td>
+            <td class="t-table__actions">
+              <a class="btn btn--outline" [routerLink]="['/projects', p.id]">Ver</a>
+            </td>
+          </tr>
+          <tr *ngIf="projectsOfEmployee().length === 0">
+            <td colspan="4" style="opacity:.7; padding:1.2rem;">Sin proyectos (según tareas asignadas).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tareas del empleado -->
+  <h3 style="margin-top: var(--space-6); margin-bottom: var(--space-3);">Tareas</h3>
+  <div class="c-card">
+    <div class="c-card__body">
+      <table class="t-table">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Estado</th>
+            <th>Creación</th>
+            <th>Límite</th>
+            <th>Proyecto</th>
+            <th class="t-table__actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of tasksOfEmployee()">
+            <td>{{ t.title }}</td>
+            <td><span class="badge" [ngClass]="'badge--' + t.status">{{ t.status }}</span></td>
+            <td>{{ t.createdAt }}</td>
+            <td>{{ t.dueDate || '—' }}</td>
+            <td>{{ projectName(t.projectId) }}</td>
+            <td class="t-table__actions">
+              <a class="btn btn--outline" [routerLink]="['/tasks', t.id, 'edit']">Editar</a>
+            </td>
+          </tr>
+          <tr *ngIf="tasksOfEmployee().length === 0">
+            <td colspan="6" style="opacity:.7; padding:1.2rem;">Sin tareas asignadas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<ng-template #notFoundTpl>
+  <section class="container">
+    <a routerLink="/employees" class="btn btn--ghost btn--sm">← Volver</a>
+    <div class="c-card"><div class="c-card__body">Empleado no encontrado.</div></div>
+  </section>
+</ng-template>
+
+

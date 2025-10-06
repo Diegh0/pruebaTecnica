@@ -1,0 +1,12 @@
+.title { margin-bottom: var(--space-3); }
+/* Mantén tu .title si ya lo tienes */
+.col-desc { width: 40%; }
+
+.ellipsis {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: .95;
+}

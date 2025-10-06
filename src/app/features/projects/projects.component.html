@@ -1,0 +1,73 @@
+<section class="container">
+  <h2 class="title">Proyectos</h2>
+
+  <div class="toolbar l-flex l-flex--row" style="gap: var(--space-3); align-items: center;">
+    <input class="f-input" type="search" placeholder="Buscar por nombre…"
+           (input)="q.set($any($event.target).value)" />
+    <button class="btn btn--lg btn--elevated" (click)="create()">Nuevo proyecto</button>
+  </div>
+
+  <div class="c-card">
+  <div class="c-card__body">
+    <table class="t-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th class="col-desc">Descripción</th>
+          <th>Estado</th>
+          <th>Inicio</th>
+          <th>Fin</th>
+          <th class="t-table__actions">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of filtered()" (click)="open(p)">
+          <td>{{ p.name }}</td>
+
+          <!-- Nueva columna -->
+          <td class="col-desc">
+            <span class="ellipsis" [attr.title]="p.description || ''">
+              {{ p.description || '—' }}
+            </span>
+          </td>
+
+          <td><span class="badge" [ngClass]="'badge--' + p.status">{{ p.status }}</span></td>
+          <td>{{ p.startDate || '—' }}</td>
+          <td>{{ p.endDate || '—' }}</td>
+          <td class="t-table__actions">
+            <button class="btn btn--outline" (click)="edit(p, $event)">Editar</button>
+            <button class="btn btn--danger-ghost btn--icon btn--round"
+        (click)="askDelete(p, $event)" aria-label="Eliminar proyecto">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+       aria-hidden="true">
+    <polyline points="3 6 5 6 21 6"></polyline>
+    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+    <path d="M10 11v6"></path>
+    <path d="M14 11v6"></path>
+    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+  </svg>
+</button>
+
+          </td>
+        </tr>
+        <tr *ngIf="filtered().length === 0">
+          <td colspan="6" style="opacity:.7; padding:1.2rem;">No hay proyectos.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</section>
+
+<!-- Confirm dialog -->
+<app-confirm-dialog
+  *ngIf="confirmOpen()"
+  [title]="'Eliminar proyecto'"
+  [message]="'¿Seguro que quieres eliminar «' + (toDelete()?.name || '') + '»?'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'Cancelar'"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()"
+></app-confirm-dialog>

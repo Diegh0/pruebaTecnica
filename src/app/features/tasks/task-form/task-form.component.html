@@ -1,0 +1,58 @@
+<form (ngSubmit)="submit()" [formGroup]="form" class="c-card">
+  <div class="c-card__body">
+    <div class="f-grid">
+      <div class="f-field">
+        <label class="f-label">Título *</label>
+        <input class="f-input" type="text" formControlName="title" placeholder="Ej: Configurar CI/CD" />
+        <small class="f-err" *ngIf="f.title.touched && f.title.invalid">
+          El título es obligatorio (mín. 3 caracteres).
+        </small>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label">Estado *</label>
+        <select class="f-select" formControlName="status">
+          <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label">Proyecto *</label>
+        <select class="f-select" formControlName="projectId">
+          <option value="" disabled>Selecciona proyecto…</option>
+          <option *ngFor="let p of projects" [value]="p.id">{{ p.name }}</option>
+        </select>
+        <small class="f-err" *ngIf="f.projectId.touched && f.projectId.invalid">
+          El proyecto es obligatorio.
+        </small>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label">Empleado asignado</label>
+        <select class="f-select" formControlName="employeeId">
+          <option value="">Sin asignar</option>
+          <option *ngFor="let e of employees" [value]="e.id">{{ e.fullName }}</option>
+        </select>
+      </div>
+
+      <div class="f-field">
+        <label class="f-label">Creación</label>
+        <input class="f-input" type="date" formControlName="createdAt" />
+      </div>
+
+      <div class="f-field">
+        <label class="f-label">Fecha límite</label>
+        <input class="f-input" type="date" formControlName="dueDate" />
+      </div>
+
+      <div class="f-field f-grid--1">
+        <label class="f-label">Descripción</label>
+        <textarea class="f-textarea" rows="4" formControlName="description" placeholder="Detalles de la tarea…"></textarea>
+      </div>
+    </div>
+
+    <div class="l-flex l-flex--row" style="gap: var(--space-3); justify-content: flex-end; margin-top: var(--space-4);">
+      <button type="submit" class="btn">Guardar</button>
+    </div>
+  </div>
+</form>

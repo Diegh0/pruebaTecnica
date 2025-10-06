@@ -1,0 +1,102 @@
+<section class="container" *ngIf="project$ | async as project; else notFoundTpl">
+  <a routerLink="/projects" class="btn btn--ghost btn--sm">← Volver</a>
+  <h2 class="title">{{ project.name }}</h2>
+
+  <!-- Datos básicos -->
+  <div class="c-card">
+    <div class="c-card__body">
+      <div class="f-grid">
+        <div class="f-field">
+          <span class="f-label">Estado</span>
+          <span><span class="badge" [ngClass]="'badge--' + project.status">{{ project.status }}</span></span>
+        </div>
+        <div class="f-field">
+          <span class="f-label">Rango</span>
+          <span>{{ project.startDate || '—' }} — {{ project.endDate || '—' }}</span>
+        </div>
+      </div>
+
+      <div style="margin-top: var(--space-4)">
+        <span class="f-label">Descripción</span>
+        <p style="opacity:.9">{{ project.description || 'Sin descripción.' }}</p>
+      </div>
+
+      <div class="l-flex l-flex--row" style="gap: var(--space-3); margin-top: var(--space-4);">
+        <button class="btn btn--outline" (click)="edit(project.id)">Editar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empleados asignados -->
+  <h3 class="sub">Empleados asignados</h3>
+  <div class="c-card">
+    <div class="c-card__body">
+      <!-- chips -->
+      <div class="chips" *ngIf="(project.employeeIds?.length || 0) > 0">
+        <span class="chip" *ngFor="let id of project.employeeIds!">{{ employeeName(id) }}</span>
+      </div>
+      <div *ngIf="!project.employeeIds || project.employeeIds.length === 0" style="opacity:.7; margin-bottom: var(--space-3);">
+        Ningún empleado asignado todavía.
+      </div>
+
+      <!-- checkboxes -->
+      <div class="emp-grid">
+        <label class="emp-item" *ngFor="let e of employees()">
+          <input type="checkbox"
+                 [checked]="project.employeeIds?.includes(e.id)"
+                 (change)="toggleEmployee(project, e.id, $any($event.target).checked)" />
+          <span class="emp-name">{{ e.fullName }}</span>
+          <span class="emp-role">{{ e.role || '—' }}</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tareas del proyecto -->
+  <h3 class="sub">Tareas del proyecto</h3>
+  <div class="c-card">
+    <div class="c-card__body">
+      <table class="t-table">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Estado</th>
+            <th>Creación</th>
+            <th>Límite</th>
+            <th>Empleado</th>
+            <th class="t-table__actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of tasksOfProject()">
+            <td>{{ t.title }}</td>
+            <td><span class="badge" [ngClass]="'badge--' + t.status">{{ t.status }}</span></td>
+            <td>{{ t.createdAt }}</td>
+            <td>{{ t.dueDate || '—' }}</td>
+            <td>
+              <select class="f-select"
+                      [value]="t.employeeId || ''"
+                      (change)="setEmployeeForTask(t, $any($event.target).value)">
+                <option value="">Sin asignar</option>
+                <option *ngFor="let e of employees()" [value]="e.id">{{ e.fullName }}</option>
+              </select>
+            </td>
+            <td class="t-table__actions">
+              <a class="btn btn--outline" [routerLink]="['/tasks', t.id, 'edit']">Editar</a>
+            </td>
+          </tr>
+          <tr *ngIf="tasksOfProject().length === 0">
+            <td colspan="6" style="opacity:.7; padding:1.2rem;">Este proyecto aún no tiene tareas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<ng-template #notFoundTpl>
+  <section class="container">
+    <a routerLink="/projects" class="btn btn--ghost btn--sm">← Volver</a>
+    <div class="c-card"><div class="c-card__body">Proyecto no encontrado.</div></div>
+  </section>
+</ng-template>
